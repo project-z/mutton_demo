@@ -18,8 +18,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     ExternalProject_Add(libmutton
       PREFIX ${EXT_PREFIX}
-      URL https://github.com/project-z/mutton/archive/eefcbc29a1d6c30d2519d6a2ba3878562a576ea2.zip
-      URL_MD5 "b0f16d3e3b93a7cb562f69536e6ae731"
+      URL https://github.com/project-z/mutton/archive/85f896e2bcb5675bb9d6b4c777985b245723acd7.zip
+      URL_MD5 ff194cfc78c59f7952b5203f556cb77f
       CMAKE_ARGS "-DCMAKE_BUILD_TYPE=debug"
       BUILD_IN_SOURCE 1
       )

@@ -26,17 +26,18 @@
 
 #include "libmutton/mutton.h"
 
-const static char* LUA_SCRIPT_PATH = "src/lua_scripts";
-const static char* LUA_SCRIPT_EXT = ".lua";
+const static char* DB_PATH = "tmp/demo";
+const static mtn_index_partition_t INDEX_PARTITION = 1;
+const static char* BUCKET_NAME = "i am a bucket";
 
 const static char* BASIC_EVENT_NAME = "basic";
 const static char* BASIC_EVENT_JSON = "{\"a_field\":\"TROLOLOL I'm an Event!!!\"}";
 
-const static mtn_index_partition_t INDEX_PARTITION = 1;
+const static char* LUA_SCRIPT_EXT = ".lua";
+const static char* LUA_SCRIPT_PATH = "src/lua_scripts";
 
-const static char* BUCKET_NAME = "i am a bucket";
-
-const static char* DB_PATH = "tmp/demo";
+const static char* LUA_PACKAGE_PATH = "src/lua_scripts/packages/?.lua";
+const static char* LUA_LIB_PATH = "src/lua_scripts/lib/?";
 
 
 bool
@@ -95,7 +96,27 @@ main()
 
     if (!check_status(
             context.get(),
-            mutton_set_opt(context.get(), MTN_OPT_DB_PATH, (void*) DB_PATH, 8, &status),
+            mutton_set_opt(context.get(), MTN_OPT_DB_PATH, (void*) DB_PATH, strlen(DB_PATH), &status),
+            status,
+            "error setting option:"))
+    {
+        return -1;
+    }
+
+    std::string lua_package_path = boost::filesystem::system_complete(boost::filesystem::path(LUA_PACKAGE_PATH)).native();
+
+    if (!check_status(
+            context.get(),
+            mutton_set_opt(context.get(), MTN_OPT_LUA_PATH, (void*) lua_package_path.c_str(), lua_package_path.size(), &status),
+            status,
+            "error setting option:"))
+    {
+        return -1;
+    }
+
+    if (!check_status(
+            context.get(),
+            mutton_set_opt(context.get(), MTN_OPT_LUA_CPATH, (void*) LUA_LIB_PATH, strlen(LUA_LIB_PATH), &status),
             status,
             "error setting option:"))
     {
